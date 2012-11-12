@@ -1,8 +1,7 @@
 #! /bin/sh
 
 BASEDIR=$(dirname $0)
-DEPLOY_DIR=/var/www-staging/gleebox
-
+DEPLOY_DIR=/var/www-$1/gleebox
 rsync -qrlpgoDz -c --delete $EXCLUDES --progress $BASEDIR $DEPLOY_DIR
 cd $DEPLOY_DIR
 pwd
@@ -12,6 +11,5 @@ if [ $1 = "staging" ]; then
 else if [ $1 == "production" ]; then
   ./runpaste stop
   ./runpaste start
-
 fi
 fi
