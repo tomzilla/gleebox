@@ -14,3 +14,4 @@ else if [ $1 == "production" ]; then
   ./runpaste start
 
 fi
+fi
