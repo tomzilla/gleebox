@@ -1,7 +1,7 @@
 #! /bin/sh
 
 BASEDIR=$(dirname $0)
-DEPLOY_DIR=/var/www-$1/gleebox
+DEPLOY_DIR="/var/www-$1/gleebox"
 rsync -qrlpgoDz -c --delete $EXCLUDES --progress $BASEDIR $DEPLOY_DIR
 cd $DEPLOY_DIR
 pwd
