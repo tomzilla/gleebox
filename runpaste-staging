@@ -13,7 +13,7 @@ if [ $1 = "start" ]; then
 
 # start all servers
 for id in $SERVER_IDS; do
-  CMD="paster serve --server-name=main --app-name=main --daemon --pid-file=$PID_PATH/gleebox$id.pid --log-file=$LOG_PATH/gleebox$id.log $INI_FILE start server_id=$id"
+  CMD="paster serve -v --server-name=main --app-name=main --daemon --pid-file=$PID_PATH/gleebox$id.pid --log-file=$LOG_PATH/gleebox$id.log $INI_FILE start server_id=$id"
   echo $CMD
   $CMD
 done
