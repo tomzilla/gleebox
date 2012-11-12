@@ -2,7 +2,6 @@
 
 SERVER_IDS='staging'
 INI_FILE="staging.ini"
-USERNAME=deploy
 GROUP=deploy
 PID_PATH="/var/run/paste"
 LOG_PATH="/var/log/paste"
@@ -14,7 +13,7 @@ if [ $1 = "start" ]; then
 
 # start all servers
 for id in $SERVER_IDS; do
-  CMD="paster serve --server-name=main --app-name=main --daemon --user=$USERNAME --group=$GROUP --pid-file=$PID_PATH/india$id.pid --log-file=$LOG_PATH/gleebox$id.log $INI_FILE start server_id=$id"
+  CMD="paster serve --server-name=main --app-name=main --daemon --group=$GROUP --pid-file=$PID_PATH/india$id.pid --log-file=$LOG_PATH/gleebox$id.log $INI_FILE start server_id=$id"
   echo $CMD
   $CMD
 done
@@ -23,7 +22,7 @@ else if [ $1 == "stop" ]; then
 
 # stop all servers
 for id in $SERVER_IDS; do
-  CMD="paster serve --server-name=main --app-name=main --daemon --user=$USERNAME --group=$GROUP --pid-file=$PID_PATH/india$id.pid --log-file=$LOG_PATH/gleebox$id.log $INI_FILE stop server_id=$id"
+  CMD="paster serve --server-name=main --app-name=main --daemon --group=$GROUP --pid-file=$PID_PATH/india$id.pid --log-file=$LOG_PATH/gleebox$id.log $INI_FILE stop server_id=$id"
   echo $CMD
   $CMD
 done
@@ -32,7 +31,7 @@ else if [ $1 == "restart" ]; then
 
 # restart all servers
 for id in $SERVER_IDS; do
-  CMD="paster serve  --server-name=main --app-name=main --daemon --user=$USERNAME --group=$GROUP --pid-file=$PID_PATH/india$id.pid --log-file=$LOG_PATH/gleebox$id.log $INI_FILE restart server_id=$id"
+  CMD="paster serve  --server-name=main --app-name=main --daemon --group=$GROUP --pid-file=$PID_PATH/india$id.pid --log-file=$LOG_PATH/gleebox$id.log $INI_FILE restart server_id=$id"
   echo $CMD
   $CMD
 done
@@ -40,7 +39,7 @@ done
 else if [ $1 == "status" ]; then
 
 for id in $SERVER_IDS; do
-  CMD="paster serve --server-name=main --app-name=main --daemon --user=$USERNAME --group=$GROUP --pid-file=$PID_PATH/india$id.pid --log-file=$LOG_PATH/gleebox$id.log $INI_FILE status server_id=$id"
+  CMD="paster serve --server-name=main --app-name=main --daemon --group=$GROUP --pid-file=$PID_PATH/india$id.pid --log-file=$LOG_PATH/gleebox$id.log $INI_FILE status server_id=$id"
   echo $CMD
   $CMD
 done
