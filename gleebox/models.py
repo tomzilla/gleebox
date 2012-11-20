@@ -48,7 +48,8 @@ class User(dict):
         blob = User()
         blob['id'] = self.next_id()
         blob['email'] = email
-        blob['password'] = sha512(self.SALTa + password + self.SALTb).hexdigest()
+        if password:
+            blob['password'] = sha512(self.SALTa + password + self.SALTb).hexdigest()
         print blob
         key = self.make_key(blob['id'])
         print key
@@ -57,7 +58,10 @@ class User(dict):
 
     @classmethod
     def get(self, id):
-        return couchbase.get(self.make_key(id))
+        data = couchbase.get(self.make_key(id))
+        if len(data) == 3:
+            return simplejson.loads(data[2])
+        return None
 
     def create_fb(token):
         pass
@@ -74,8 +78,8 @@ class User(dict):
 
         return blob
 
-    def update(self):
-        return couchbase.set(self.make_key(self['id']), self)
+    def save(self):
+        return couchbase.set(self.make_key(self['id']), 0, 0, simplejson.dumps(self))
 
     @classmethod
     def next_id(self):

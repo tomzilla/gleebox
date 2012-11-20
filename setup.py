@@ -14,6 +14,9 @@ requires = [
     'pyramid_debugtoolbar',
     'zope.sqlalchemy',
     'waitress',
+    'pyramid_handlers',
+    'couchbase',
+    'simplejson',
     ]
 
 setup(name='gleebox',

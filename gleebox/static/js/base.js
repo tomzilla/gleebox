@@ -37,20 +37,17 @@ Gleebox = {
     },
     api: function(controller, action, params, callback) {
         console.log("Calling Gleebox API: " + controller + ":" + action + " With params:" + params);
-        $.post('/' + controller + '/' + action, params, callback, 'json');
+        console.log(params);
+        $.get('/' + controller + '/' + action, params, callback, 'json');
     },
     login: function() {
         FB.getLoginStatus(function(response) {
-            if (response.status == 'connected') {
-                //show page or something
-            } else {
                 //show login button
                 Gleebox.require('fbLoginButton', function(Button) {
                     var button = new Button();
                     console.log('asds');
                     $('body').append(button.node());
                 });
-            }
         });
     }
 };

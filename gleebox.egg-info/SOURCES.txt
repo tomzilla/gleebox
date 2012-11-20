@@ -5,9 +5,9 @@ development.ini
 production.ini
 setup.cfg
 setup.py
+staging.ini
 gleebox/__init__.py
 gleebox/models.py
-gleebox/tests.py
 gleebox/views.py
 gleebox.egg-info/PKG-INFO
 gleebox.egg-info/SOURCES.txt
@@ -16,6 +16,12 @@ gleebox.egg-info/entry_points.txt
 gleebox.egg-info/not-zip-safe
 gleebox.egg-info/requires.txt
 gleebox.egg-info/top_level.txt
+gleebox/controllers/__init__.py
+gleebox/controllers/account.py
+gleebox/lib/__init__.py
+gleebox/lib/account.py
+gleebox/lib/auth.py
+gleebox/lib/helpers.py
 gleebox/scripts/__init__.py
 gleebox/scripts/initializedb.py
 gleebox/static/favicon.ico
@@ -29,3 +35,5 @@ gleebox/static/pyramid-small.png
 gleebox/static/pyramid.png
 gleebox/static/transparent.gif
 gleebox/templates/mytemplate.pt
+gleebox/tests/__init__.py
+gleebox/tests/auth.py
