@@ -27,7 +27,7 @@ def main(global_config, **settings):
     config.include('pyramid_handlers')
     config.scan()
     config.add_handler('account', 'account/{action}', handler=Account)
-    config.add_handler('home', '/', handler=Home, action='index')
+    config.add_handler('home', '/', handler=Home, action='launchrock')
     cb = Couchbase(settings['couchbase.host'], settings['couchbase.bucket'], settings['couchbase.password'])[settings['couchbase.bucket']]
     models.couchbase = cb
     return config.make_wsgi_app()
