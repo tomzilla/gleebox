@@ -21,6 +21,8 @@ var EventDispatcher = Class.extend({
         return false;
     },
     barrier: function(event, callback) {
+        console.log(event);
+        console.log(this.barriers[event]);
         if (this.barriers[event] === true) {
             callback(this);
         } else {
@@ -42,8 +44,8 @@ var EventDispatcher = Class.extend({
             while (len--) {
                 listeners[len](this);   //callback with self
             }       
-            this.barriers[event] = true;
         }
+        this.barriers[event] = true;
     }
 });
 Gleebox.eventCenter = new EventDispatcher();

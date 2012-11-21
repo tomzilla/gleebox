@@ -1,0 +1,13 @@
+.header_navigationItem {
+    display: inline;
+    float: left;
+    font-size: 2em;
+    color: white;
+    border-left: 1px #666 solid;
+    height: 50px;
+    padding: 30px 10px 0 10px;
+    cursor: pointer;
+}
+.header_navigationItem:hover {
+    background-color: #333;
+}

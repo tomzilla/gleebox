@@ -1,3 +1,4 @@
+//@ sourceURL=module.js
 var module = EventDispatcher.extend({
     init: function() {
     },
@@ -5,21 +6,33 @@ var module = EventDispatcher.extend({
     },
     template: '',
     templateTokens: {},
-    _render: function(dict, tpl) {
-        var ret = tpl;
-        for (var k in dict) {
-            ret = ret.replace('%' + k + '%', dict[k]);
+    _render: function(tpl) {
+        var ret = tpl,
+            pat = /\%.*?\%/g,
+            token,
+            key;
+        while (token = pat.exec(ret)) {
+            token = token[0];
+            key = token.substring(1, token.length-1);
+            
+            if (this.hasOwnProperty(key)) {
+                ret = ret.replace(token, this[key]);
+            }
+        }
+        ret = ret.replace('$$', 'class="' + this.name + '" ');
+        pat = /\$.*?\$/g;
+        while (token = pat.exec(ret)) {
+            ret = ret.replace(token[0], 'class="' + this.name + '_' + token[0].substring(1, token[0].length - 1) + '" ');
         }
         return ret;
     },
     _node: null,
     node: function() {
         if (!this._node) {
-            this._node = $(this._render(this.templateTokens, this.template));
+            this._node = $(this._render(this.template));
         }
         this.onRender(this._node);
-        console.log(this._node);
-        return this._node;
+        return $(this._node);
     },
     events: {},
     children: {},

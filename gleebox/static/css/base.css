@@ -12,6 +12,7 @@ body {
 #headline {
     font-size: 3em;
     padding: 10px 20px;
+    float:left;
 }
 #footer {
     bottom: 0;

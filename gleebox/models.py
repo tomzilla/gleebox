@@ -70,6 +70,7 @@ class User(CouchData):
         blob = User()
         blob['id'] = self.next_id()
         blob['email'] = email
+        blob['favs'] = []
         if password:
             blob['password'] = sha512(self.SALTa + password + self.SALTb).hexdigest()
         for k, v in kw.iteritems():
@@ -79,11 +80,11 @@ class User(CouchData):
 
     @classmethod
     def _schema(self):
-        return ['id', 'email', 'password', 'fbid']
+        return ['id', 'email', 'password', 'fbid', 'favs']
 
     @classmethod
     def next_id(self):
-        key = 'INTERNAL_%s_id_increment' % self.__class__.__name__
+        key = 'INTERNAL_%s_id_increment' % 'user'
         next = couchbase.incr(key, 1, 0)[0]
         return next
 
@@ -112,7 +113,7 @@ class FBUserMapping(CouchData):
 class Item(CouchData):
     @classmethod
     def _schema(self):
-        return ['id', 'user_id', 'title', 'price']
+        return ['id', 'user_id', 'title', 'price', 'time_submitted', 'time_modified']
 
     @classmethod
     def create(self, user_id, title, price):
@@ -128,6 +129,6 @@ class Item(CouchData):
 
     @classmethod
     def next_id(self):
-        key = 'INTERNAL_%s_id_increment' % self.__class__.__name__
+        key = 'INTERNAL_%s_id_increment' % 'item'
         next = couchbase.incr(key, 1, 0)[0]
         return next

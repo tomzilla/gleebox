@@ -3,7 +3,8 @@ from gleebox.models import User, FBUserMapping
 
 def create(email, password, **kw):
     user = User.create(email, password, **kw)
-    del user['password']
+    if user and user.get('password'):
+        del user['password']
     return user
 
 def create_fb(facebook_token):
@@ -12,12 +13,14 @@ def create_fb(facebook_token):
     user = create(profile['email'], None, fbid=profile['id'])
     user.save()
     FBUserMapping.create(profile['id'], user['id'])
-    del user['password']
+    if user and user.get('password'):
+        del user['password']
     return user
 
 def get(id):
     user = User.get(id)
-    del user['password']
+    if user and user.get('password'):
+        del user['password']
     return user
 
 def get_from_fb_token(token):
@@ -26,5 +29,6 @@ def get_from_fb_token(token):
     user_id = FBUserMapping.get(profile['id']).get('user_id')
     if user_id:
         user = User.get(id)
-        del user['password']
+        if user and user.get('password'):
+            del user['password']
         return user

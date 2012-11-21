@@ -10,12 +10,14 @@
 <meta property="og:url" content="www.gleebox.com" />
 <meta property="og:image" content="https://launchrock-assets.s3.amazonaws.com/facebook-files/W6KSE7VS_1352595998777.png?_=1" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/lib/jquery.address.js"></script>
 <script type="text/javascript">
     var Gleebox;
 </script>
 <script type="text/javascript" src="/static/js/class.js"></script>
-<script type="text/javascript" src="/static/js/base.js"></script>
 <script type="text/javascript" src="/static/js/EventDispatcher.js"></script>
+<script type="text/javascript" src="/static/js/Gleebox.js"></script>
+<script type="text/javascript" src="/static/js/base.js"></script>
 <script type="text/javascript" src="/static/js/modules/service/init.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
 </head>
