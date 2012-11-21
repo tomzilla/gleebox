@@ -5,6 +5,7 @@ from sqlalchemy import engine_from_config
 
 from .controllers.account import Account
 from .controllers.home import Home
+from .controllers.item import Item
 
 from .models import (
     DBSession,
@@ -27,7 +28,8 @@ def main(global_config, **settings):
     config.include('pyramid_handlers')
     config.scan()
     config.add_handler('account', 'account/{action}', handler=Account)
-    config.add_handler('home', '/', handler=Home, action='launchrock')
+    config.add_handler('item', 'item/{action}', handler=Item)
+    config.add_handler('home', '/', handler=Home, action='index')
     cb = Couchbase(settings['couchbase.host'], settings['couchbase.bucket'], settings['couchbase.password'])[settings['couchbase.bucket']]
     models.couchbase = cb
     return config.make_wsgi_app()

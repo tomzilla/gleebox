@@ -17,7 +17,6 @@ def issue_token(id, issue_time=None):
     msg = cipher.encrypt(msg)
     return msg.encode('hex')
 
-#return user_id
 def decode_token(token):
     msg = token.decode('hex')
     cipher = AES.new(SECRET, AES.MODE_ECB)

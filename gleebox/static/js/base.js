@@ -1,6 +1,6 @@
 //provides base functionality for all pages
 //
-Gleebox = {};
+Gleebox = Gleebox || {};
 
 window.console = window.console || {};
 Gleebox = {
@@ -35,21 +35,66 @@ Gleebox = {
             });
         }
     },
-    api: function(controller, action, params, callback) {
-        console.log("Calling Gleebox API: " + controller + ":" + action + " With params:" + params);
+    api: function(call, params, callback) {
+        console.log("Calling Gleebox API: " + call + " With params:" + params);
         console.log(params);
-        $.get('/' + controller + '/' + action, params, callback, 'json');
+        var c = call.split('.');
+        $.get('/' + c[0] + '/' + c[1], params, callback, 'json');
     },
     login: function() {
-        FB.getLoginStatus(function(response) {
-                //show login button
-                Gleebox.require('fbLoginButton', function(Button) {
-                    var button = new Button();
-                    console.log('asds');
-                    $('body').append(button.node());
-                });
+        Gleebox.eventCenter.barrier('userservice_init', function callback() {
+            if (!Object.size(Gleebox.userService.currentUser)) {
+                //check cookie
+                var token = Gleebox.getCookie('token');
+                if (token) {
+                    Gleebox.api('account.get', {token: token}, function(data) {
+                        console.log('asd', data);
+                        if (!data.error) {
+                            Gleebox.userService.setUser(data);
+                        } else {
+                            console.log('sdf');
+                            Gleebox.fbLogin();
+                        }
+                    });
+                } else {
+                    Gleebox.fbLogin();
+                }
+            }
         });
+    },
+    fbLogin: function() {
+        FB.getLoginStatus(function(response) {
+            //show login button
+            console.log('asd', response);
+            Gleebox.require('fbLoginButton', function(Button) {
+                var button = new Button();
+                $('body').append(button.node());
+            });
+        });
+    },
+    getCookie: function(c_name)
+    {
+        var i,x,y,ARRcookies=document.cookie.split(";");
+        for (i=0;i<ARRcookies.length;i++)
+        {
+            x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+            y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+            x=x.replace(/^\s+|\s+$/g,"");
+            if (x==c_name)
+                {
+                    return unescape(y);
+                }
+        }
+    },
+
+    setCookie: function(c_name,value,exdays)
+    {
+        var exdate=new Date();
+        exdate.setDate(exdate.getDate() + exdays);
+        var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+        document.cookie=c_name + "=" + c_value;
     }
+
 };
 
 $(function() {

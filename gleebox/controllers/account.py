@@ -5,7 +5,6 @@ from pyramid.response import Response
 from . import *
 from gleebox.lib import account, auth
 
-
 class Account(BaseController):
 
     @action(renderer='json')
@@ -19,12 +18,13 @@ class Account(BaseController):
             if email and password:
                 user = account.create(email, password)
             elif facebook_token:
-                user = account.create_fb(token)
+                user = account.create_fb(facebook_token)
             id = user['id']
             token = auth.issue_token(id)
+            user['token'] = token
             self.request.response.set_cookie('user_id', str(id), max_age=365*86400)
             self.request.response.set_cookie('token', token, max_age=365*86400)
-            return {'response': {'token': token, 'id': id}}
+            return {'user': user}
         else:
             raise ApiException('missing info')
 
@@ -36,7 +36,11 @@ class Account(BaseController):
             token = self.request.cookies.get('token')
         id = auth.decode_token(token).split('|')[0]
         blob = account.get(id)
-        return blob
+        if blob:
+            blob['token'] = token
+        else:
+            raise ApiException('User not found')
+        return {'user': blob}
 
     @action(renderer='json')
     @api
@@ -45,11 +49,12 @@ class Account(BaseController):
         if fb_token:
             user = account.get_from_fb_token(self.request.params.get('fb_token'))
             if not user:
-                user = account.create_fb(token)
+                user = account.create_fb(fb_token)
             id = user['id']
             token = auth.issue_token(id)
             self.request.response.set_cookie('user_id', str(id), max_age=365*86400)
             self.request.response.set_cookie('token', token, max_age=365*86400)
-            return {'response': {'token': token, 'id': id}}
+            user['token'] = token
+            return {'user': user}
         else:
             raise ApiException('missing info')

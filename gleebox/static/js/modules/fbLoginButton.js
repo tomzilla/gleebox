@@ -1,22 +1,20 @@
 Gleebox.require('module', function(M) {
     var FbLoginButton = M.extend({
         template: '<a href="#">Login Using Facebook</a>',
-        events: {
-            'click': function(evt) {
-                console.log('click');
+        onRender: function(node) {
+            node.click(function(evt) {
                 FB.login(function(response) {
-                    console.log(response);
                     if (response.authResponse) {
-                        Gleebox.api('account', 'create', {
+                        Gleebox.api('account.fb_login', {
                             'fb_token': response.authResponse.accessToken
                         }, function(data) {
-                            console.log(data);
+                            Gleebox.eventCenter.barrier('userservice_init', function callback() {
+                                Gleebox.userService.setUser(data);
+                            })
                         });
-                    } else {
-                        console.log('User cancelled login or did not fully authorize.');
                     } 
                 }, {'scope': 'email'});
-            }
+            });
         }
     });
     Gleebox.addModule('fbLoginButton', FbLoginButton);

@@ -39,9 +39,9 @@ class CouchData(dict):
     @classmethod
     def get(self, id):
         data = couchbase.get(self.make_key(id))
-        if len(data) == 3:
+        if data and len(data) == 3:
             return simplejson.loads(data[2])
-        return None
+        return {}
 
     @classmethod
     def _schema(self):
@@ -56,7 +56,7 @@ class CouchData(dict):
 
     @classmethod
     def make_key(self, id):
-        return '%s_%s' % (self.__class__, id)
+        raise Exception('Must Implement')
 
     def save(self):
         return couchbase.set(self.make_key(self['id']), 0, 0, simplejson.dumps(self))
@@ -83,8 +83,13 @@ class User(CouchData):
 
     @classmethod
     def next_id(self):
-        key = 'INTERNAL_%s_id_increment' % self.__class__
-        return couchbase.incr(key, 1, 0)[1]
+        key = 'INTERNAL_%s_id_increment' % self.__class__.__name__
+        next = couchbase.incr(key, 1, 0)[0]
+        return next
+
+    @classmethod
+    def make_key(self, id):
+        return 'User_%s' % (id)
 
 class FBUserMapping(CouchData):
     @classmethod
@@ -99,3 +104,30 @@ class FBUserMapping(CouchData):
         map['user_id'] = user_id
         map.save()
         return map
+
+    @classmethod
+    def make_key(self, id):
+        return 'FBUserMapping_%s' % (id)
+
+class Item(CouchData):
+    @classmethod
+    def _schema(self):
+        return ['id', 'user_id', 'title', 'price']
+
+    @classmethod
+    def create(self, user_id, title, price):
+        item = Item()
+        item['user_id'] = user_id
+        item['title'] = title
+        item['price'] = price
+        return item
+
+    @classmethod
+    def make_key(self, id):
+        return 'Item_%s' % (id)
+
+    @classmethod
+    def next_id(self):
+        key = 'INTERNAL_%s_id_increment' % self.__class__.__name__
+        next = couchbase.incr(key, 1, 0)[0]
+        return next
