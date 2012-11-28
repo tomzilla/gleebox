@@ -21,8 +21,16 @@ var module = EventDispatcher.extend({
         }
         ret = ret.replace('$$', 'class="' + this.name + '" ');
         pat = /\$.*?\$/g;
+        var classes;
+        var classesString;
         while (token = pat.exec(ret)) {
-            ret = ret.replace(token[0], 'class="' + this.name + '_' + token[0].substring(1, token[0].length - 1) + '" ');
+            classesString = token[0].substring(1, token[0].length - 1);
+            classes = classesString.split('\\s+');
+            var classesCount = classes.length;
+            for (var i = 0; i < classesCount; i ++) {
+                classes.push(this.name + '_' + classes[i]);
+            }
+            ret = ret.replace(token[0], 'class="' + classes.join(' ') + '"');
         }
         return ret;
     },
@@ -30,8 +38,9 @@ var module = EventDispatcher.extend({
     node: function() {
         if (!this._node) {
             this._node = $(this._render(this.template));
+            var this2 = this;
+            this.onRender(this._node);
         }
-        this.onRender(this._node);
         return $(this._node);
     },
     events: {},
@@ -45,8 +54,10 @@ var module = EventDispatcher.extend({
         }
     },
     removeChild: function(id) {
-        this.children[id].node.remove();
-        delete this.children[id];
+        if (this.children[id]) {
+            this.children[id].node().remove();
+            delete this.children[id];
+        }
     }
 });
 Gleebox.addModule('module', module);

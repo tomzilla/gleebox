@@ -28,7 +28,7 @@ Gleebox = $.extend(Gleebox, {
                 $("<link/>", {
                     rel: "stylesheet",
                     type: "text/css",
-                    href: "/static/css/" + module + ".css"
+                    href: "/static/css/modules/" + module + ".css?" + (new Date().getTime()) 
                 }).appendTo("head");
             }
             var script = document.createElement('script');
@@ -44,34 +44,16 @@ Gleebox = $.extend(Gleebox, {
         $.get('/' + c[0] + '/' + c[1], params, callback, 'json');
     },
     login: function() {
-        console.log('asds');
         Gleebox.eventCenter.barrier('userservice_init', function callback() {
-            console.log('asdfa');
             if (!Object.size(Gleebox.userService.currentUser)) {
                 //check cookie
                 var token = Gleebox.getCookie('token');
                 if (token) {
                     Gleebox.api('account.get', {token: token}, function(data) {
-                        console.log(data);
-                        if (!data.error) {
-                            Gleebox.userService.setUser(data);
-                        } else {
-                            Gleebox.fbLogin();
-                        }
+                        Gleebox.userService.setUser(data.response.user);
                     });
-                } else {
-                    Gleebox.fbLogin();
                 }
             }
-        });
-    },
-    fbLogin: function() {
-        FB.getLoginStatus(function(response) {
-            //show login button
-            Gleebox.require('fbLoginButton', function(Button) {
-                var button = new Button();
-                $('body').append(button.node());
-            });
         });
     },
     getCookie: function(c_name)

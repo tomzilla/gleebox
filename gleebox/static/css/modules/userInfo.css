@@ -1,0 +1,9 @@
+.userInfo {
+    float: right;
+    right: 10px;
+    bottom: 10px;
+    position: absolute;
+}
+.userInfo_item {
+    margin: 0 5px;
+}

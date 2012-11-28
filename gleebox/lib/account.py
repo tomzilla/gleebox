@@ -11,6 +11,8 @@ def create_fb(facebook_token):
     graph = GraphAPI(facebook_token)
     profile = graph.get_object('me')
     user = create(profile['email'], None, fbid=profile['id'])
+    user['first_name'] = profile.get('first_name', '')
+    user['last_name'] = profile.get('last_name', '')
     user.save()
     FBUserMapping.create(profile['id'], user['id'])
     if user and user.get('password'):

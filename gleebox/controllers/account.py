@@ -22,7 +22,6 @@ class Account(BaseController):
             id = user['id']
             token = auth.issue_token(id)
             user['token'] = token
-            self.request.response.set_cookie('user_id', str(id), max_age=365*86400)
             self.request.response.set_cookie('token', token, max_age=365*86400)
             return {'user': user}
         else:
@@ -52,7 +51,6 @@ class Account(BaseController):
                 user = account.create_fb(fb_token)
             id = user['id']
             token = auth.issue_token(id)
-            self.request.response.set_cookie('user_id', str(id), max_age=365*86400)
             self.request.response.set_cookie('token', token, max_age=365*86400)
             user['token'] = token
             return {'user': user}

@@ -1,16 +1,16 @@
 Gleebox = Gleebox || {};
 var EventDispatcher = Class.extend({
-    events: {},
-    barriers: {},
+    _events: {},
+    _barriers: {},
     bind: function(event, callback) {
-        this.events[event] = this.events[event] || [];
-        if (this.events[event]) {
-            this.events[event].push(callback);
+        this._events[event] = this._events[event] || [];
+        if (this._events[event]) {
+            this._events[event].push(callback);
         }
     },
     unbind: function(event, callback) {
-        if (this.events[event]) {
-            var listeners = this.events[event];
+        if (this._events[event]) {
+            var listeners = this._events[event];
             for (var i = listeners.length-1; i>=0; --i){
                 if (listeners[i] === callback) {
                     listeners.splice(i, 1);
@@ -21,31 +21,29 @@ var EventDispatcher = Class.extend({
         return false;
     },
     barrier: function(event, callback) {
-        console.log(event);
-        console.log(this.barriers[event]);
-        if (this.barriers[event] === true) {
+        if (this._barriers[event] === true) {
             callback(this);
         } else {
-            this.barriers[event] = this.barriers[event] || [];
-            if (this.barriers[event]) {
-                this.barriers[event].push(callback);
+            this._barriers[event] = this._barriers[event] || [];
+            if (this._barriers[event]) {
+                this._barriers[event].push(callback);
             }
         }
     },
     fire: function(event) {
-        if (this.events[event]) {
-            var listeners = this.events[event], len = listeners.length;
+        if (this._events[event]) {
+            var listeners = this._events[event], len = listeners.length;
             while (len--) {
                 listeners[len](this);   //callback with self
             }       
         }
-        if (this.barriers[event] && this.barriers[event] !== true) {
-            listeners = this.barriers[event], len = listeners.length;
+        if (this._barriers[event] && this._barriers[event] !== true) {
+            listeners = this._barriers[event], len = listeners.length;
             while (len--) {
                 listeners[len](this);   //callback with self
             }       
         }
-        this.barriers[event] = true;
+        this._barriers[event] = true;
     }
 });
 Gleebox.eventCenter = new EventDispatcher();
