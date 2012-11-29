@@ -7,8 +7,8 @@ Gleebox.require('module', function(M) {
             var this2 = this;
             Gleebox.require('itemBox/itemPicture', function(Picture) {
                 var picture = new Picture();
-                console.log(this2.item);
-                picture.setKey(this2.item['pictures'][0]);
+                var pictureKey = (this2.item['pictures'] && this2.item['pictures'].length > 0) ? this2.item['pictures'][0] : null;
+                picture.setKey(pictureKey);
                 n.append(picture.node());
             });
         }
