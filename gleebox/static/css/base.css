@@ -3,7 +3,10 @@ body {
     font-size: 14px;
     width: 100%;
     margin: 0;
+    height: 100%;
 }
+html, body, #container { height: 100%; }
+body > #container { height: auto; min-height: 100%; }
 
 a {
     color: #ffd;
@@ -16,16 +19,19 @@ a {
     background-color: #112;
     color: #ffd;
 }
+#content {
+    padding-bottom: 40px;
+}
 #headline {
     font-size: 3em;
     padding: 10px 20px;
     float:left;
 }
 #footer {
-    bottom: 0;
-    float: left;
-    position: absolute;
-    height: 40px;
-    width: 100%;
     background-color: #112;
+    clear: both;
+    position: relative;
+    z-index: 10;
+    height: 40px;
+    margin-top: -40px;
 }

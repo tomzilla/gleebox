@@ -1,5 +1,5 @@
 <%inherit file="../base.mako" />
-
+<div id="container">
 <div id="header">
 <div id="headline">
 Gleebox
