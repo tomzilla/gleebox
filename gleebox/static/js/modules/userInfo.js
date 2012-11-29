@@ -13,7 +13,6 @@ Gleebox.require('module', function(M) {
             var n = this.node();
             n.find('.loggedOut').hide();
             n.find('.loggedIn').hide();
-            console.log('info: ',user);
             var this2 = this;
             if (Object.size(user)) {
                 n.find('.loggedIn').show();

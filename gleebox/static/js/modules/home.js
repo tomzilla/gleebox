@@ -9,16 +9,13 @@ Gleebox.require('module', function(M) {
                 if (Object.size(items)) {
                     this2.addItems(items);
                 }
-                console.log('bind');
                 Gleebox.itemsService.bind('homeItems_added', function(data) {
                     this2.addItems(data)
                 });
             });
         },
         addItems: function(items) {
-            console.log(this);
             var this2 = this;
-            console.log('add items');
             var i, itemBox;
             Gleebox.require('itemBox/itemBox', function(Box) {
                 for (i = 0; i < items.length; i++) {

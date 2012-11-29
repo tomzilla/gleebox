@@ -8,13 +8,13 @@ $.address.change(function(event) {
 Gleebox.require('header/navigationBar', function(NavBar) {
     var navBar = new NavBar();
     $('#header').append(navBar.node());
-    Gleebox.require('userInfo', function(M) {
-        var userinfo = new M();
-        $('#header').append(userinfo.node());
-    });
     Gleebox.require('home', function(Home) {
         var home = new Home();
         $('#content').append(home.node());
+    });
+    Gleebox.require('userInfo', function(M) {
+        var userinfo = new M();
+        $('#header').append(userinfo.node());
     });
 });
 });

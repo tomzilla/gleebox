@@ -3,7 +3,7 @@ Gleebox.require("service/Service", function(S) {
         currentUser: {},
         setUser: function(data) {
             this.currentUser = data;
-            this.fire('user_changed', this.current_user);
+            this.fire('user_changed', data);
         },
         logout: function() {
             Gleebox.setCookie('token', '');
