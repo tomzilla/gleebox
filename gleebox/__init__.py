@@ -1,4 +1,5 @@
 import os
+from boto.s3.connection import S3Connection
 from couchbase.client import Couchbase
 from pyramid.config import Configurator
 from sqlalchemy import engine_from_config
@@ -10,13 +11,13 @@ from .controllers.item import Item
 from .models import (
     DBSession,
     Base,
+    s3,
     couchbase
     )
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
-    global couchbase
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     here = os.path.dirname(os.path.abspath(__file__))
@@ -31,5 +32,9 @@ def main(global_config, **settings):
     config.add_handler('home', '/', handler=Home, action='index')
     cb = Couchbase(settings['couchbase.host'], settings['couchbase.bucket'], settings['couchbase.password'])[settings['couchbase.bucket']]
     models.couchbase = cb
+    s3 = S3Connection(settings['aws.access_key'], settings['aws.secret_key'])
+    print s3
+    models.s3 = s3
+    print models.s3
     return config.make_wsgi_app()
 

@@ -30,7 +30,7 @@ def get_from_fb_token(token):
     profile = graph.get_object('me')
     user_id = FBUserMapping.get(profile['id']).get('user_id')
     if user_id:
-        user = User.get(id)
+        user = User.get(user_id)
         if user and user.get('password'):
             del user['password']
         return user

@@ -21,6 +21,7 @@ from hashlib import sha512
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
 couchbase = None
+s3 = None
 
 class MyModel(Base):
     __tablename__ = 'models'
@@ -113,14 +114,17 @@ class FBUserMapping(CouchData):
 class Item(CouchData):
     @classmethod
     def _schema(self):
-        return ['id', 'user_id', 'title', 'price', 'time_submitted', 'time_modified']
+        return ['id', 'user_id', 'title', 'price', 'time_submitted', 'time_modified', 'user']
 
     @classmethod
     def create(self, user_id, title, price):
         item = Item()
+        item['id'] = self.next_id()
         item['user_id'] = user_id
         item['title'] = title
         item['price'] = price
+        item['pictures'] = []
+        item.save()
         return item
 
     @classmethod

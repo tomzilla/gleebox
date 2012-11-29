@@ -1,0 +1,11 @@
+.itemBox_itemBox:hover {
+    border-color: #DDD;
+}
+.itemBox_itemBox {
+    float: left;
+    margin: 5px;
+    width: 200px;
+    border: 1px solid #666;
+    overflow: hidden;
+    height: 250px;
+}

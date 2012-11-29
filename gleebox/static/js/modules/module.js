@@ -2,6 +2,7 @@
 var module = EventDispatcher.extend({
     init: function() {
     },
+    requires: [],
     onRender: function(node) {
     },
     template: '',

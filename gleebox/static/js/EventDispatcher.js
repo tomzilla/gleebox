@@ -30,17 +30,17 @@ var EventDispatcher = Class.extend({
             }
         }
     },
-    fire: function(event) {
+    fire: function(event, data) {
         if (this._events[event]) {
             var listeners = this._events[event], len = listeners.length;
             while (len--) {
-                listeners[len](this);   //callback with self
+                listeners[len](data);   //callback with self
             }       
         }
         if (this._barriers[event] && this._barriers[event] !== true) {
             listeners = this._barriers[event], len = listeners.length;
             while (len--) {
-                listeners[len](this);   //callback with self
+                listeners[len](data);   //callback with self
             }       
         }
         this._barriers[event] = true;

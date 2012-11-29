@@ -1,6 +1,5 @@
 //provides base functionality for all pages
 //
-var globalinfo, globallogout;
 window.console = window.console || {};
 $(function() {
 $.address.change(function(event) {
@@ -12,7 +11,10 @@ Gleebox.require('header/navigationBar', function(NavBar) {
     Gleebox.require('userInfo', function(M) {
         var userinfo = new M();
         $('#header').append(userinfo.node());
-        globalinfo = userinfo;
+    });
+    Gleebox.require('home', function(Home) {
+        var home = new Home();
+        $('#content').append(home.node());
     });
 });
 });

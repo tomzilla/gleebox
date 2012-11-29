@@ -35,8 +35,6 @@
     });
 
     // Additional initialization code such as adding Event Listeners goes here
-    Gleebox.login();
-
   };
 
   (function(d, debug){

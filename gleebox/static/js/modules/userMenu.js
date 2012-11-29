@@ -11,7 +11,6 @@ Gleebox.require('module', function(M) {
                 logOut.title = 'Logout';
                 this2.addChild('logout', logOut);
                 n.append(logOut.node());
-                globallogout = logOut;
                 logOut.node().bind('click', function(evt) {
                     this2.node().hide();
                     Gleebox.userService.logout();

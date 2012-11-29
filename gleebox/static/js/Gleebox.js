@@ -8,6 +8,10 @@ Gleebox = $.extend(Gleebox, {
     addModule: function(name, moduleClass) {
         moduleClass.prototype.name = name.replace('/', '_');
         Gleebox.modules[name] = moduleClass;
+        var i;
+        for (i = 0; moduleClass.prototype.requires && i < moduleClass.prototype.requires.length; i ++) {
+            Gleebox.require(moduleClass.prototype.requires[i]);
+        }
         if (Gleebox.moduleCallbacks[name]) {
             for (var i = 0; i < Gleebox.moduleCallbacks[name].length; i++ ) {
                 var cb = Gleebox.moduleCallbacks[name].pop();
@@ -18,43 +22,40 @@ Gleebox = $.extend(Gleebox, {
         }
     },
     require: function(module, callback) {
-        console.log('require: '+ module);
+        var loading = Boolean(Gleebox.moduleCallbacks[module]);
         Gleebox.moduleCallbacks[module] = Gleebox.moduleCallbacks[module] || [];
         if (Gleebox.modules[module]) {
-            callback(Gleebox.modules[module]);   
-        } else {
-            Gleebox.moduleCallbacks[module].push(callback);
-            if (module.indexOf('service') == -1) {
-                $("<link/>", {
-                    rel: "stylesheet",
-                    type: "text/css",
-                    href: "/static/css/modules/" + module + ".css?" + (new Date().getTime()) 
-                }).appendTo("head");
+            if (callback) {
+                callback(Gleebox.modules[module]);   
             }
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = Gleebox.staticUrl + module + '.js';
-            $('head').append(script);
+        } else {
+            if (callback) {
+                Gleebox.moduleCallbacks[module].push(callback);
+            }
+            if (!loading) {
+                console.log('require: '+ module);
+                if (module.indexOf('service') == -1) {
+                    $("<link/>", {
+                        rel: "stylesheet",
+                        type: "text/css",
+                        href: "/static/css/modules/" + module + ".css?" + (new Date().getTime()) 
+                    }).appendTo("head");
+                }
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = Gleebox.staticUrl + module + '.js';
+                $('head').append(script);
+            }
         }
     },
     api: function(call, params, callback) {
         console.log("Calling Gleebox API: " + call + " With params:");
         console.log(params);
         var c = call.split('.');
-        $.get('/' + c[0] + '/' + c[1], params, callback, 'json');
-    },
-    login: function() {
-        Gleebox.eventCenter.barrier('userservice_init', function callback() {
-            if (!Object.size(Gleebox.userService.currentUser)) {
-                //check cookie
-                var token = Gleebox.getCookie('token');
-                if (token) {
-                    Gleebox.api('account.get', {token: token}, function(data) {
-                        Gleebox.userService.setUser(data.response.user);
-                    });
-                }
-            }
-        });
+        $.get('/' + c[0] + '/' + c[1], params, function(data) {
+            console.log('result for api:', data);
+            callback(data);
+        }, 'json');
     },
     getCookie: function(c_name)
     {

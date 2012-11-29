@@ -1,5 +1,6 @@
 Gleebox.require('module', function(M) {
     var userMenu = M.extend({
+        requires: ['fbLoginButton', 'userMenu'],
         template: '<div $$>' +
             '<div $loggedIn$>' +
                 '<span $item first_name$ />' +
@@ -32,8 +33,8 @@ Gleebox.require('module', function(M) {
             var this2 = this;
             Gleebox.eventCenter.barrier('userservice_init', function callback() {
                 this2.setUser(Gleebox.userService.currentUser);
-                Gleebox.userService.bind('user_changed', function(service) {
-                    this2.setUser(service.currentUser);
+                Gleebox.userService.bind('user_changed', function(user) {
+                    this2.setUser(user);
                 });
             })
             Gleebox.require('fbLoginButton', function (M) {
