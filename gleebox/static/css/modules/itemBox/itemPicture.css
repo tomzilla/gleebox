@@ -1,0 +1,9 @@
+.itemBox_itemPicture {
+    width: 200px;
+    height: 250px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+.itemBox_itemPicture_picture {
+    max-width: none;
+}

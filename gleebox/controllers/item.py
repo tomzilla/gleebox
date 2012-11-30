@@ -37,15 +37,20 @@ class Item(BaseController):
 
     @action(renderer='json')
     @authed_api
+    def unfav(self):
+        return {}
+
+    @action(renderer='json')
+    @authed_api
     def fav(self):
         #go directly to couchbase for now
         user = User.get(self.user_id)
         user.setdefault('favs', [])
+        item_id = self.required_params(['item_id'])
         if item_id not in user['favs']:
             user['favs'].append(item_id)
             user.save()
 
-            item_id = self.required_params(['item_id'])
             timeblock = int(time.time() / (60 * 30))
             key = 'favsblock_%s_%s' % (item_id, timeblock)
             val, cas = couchbase.incr('INTERNAL_%s' % key , 1, 0)

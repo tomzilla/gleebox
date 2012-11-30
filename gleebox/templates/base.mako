@@ -9,8 +9,10 @@
 <meta property="og:description" content="Life is too short not to be able to enjoy your wants. GleeBox is a platform for your wants, wishes, and desires to come true. Enter your email below to be one of the first to know when we launch!" />
 <meta property="og:url" content="www.gleebox.com" />
 <meta property="og:image" content="https://launchrock-assets.s3.amazonaws.com/facebook-files/W6KSE7VS_1352595998777.png?_=1" />
+<link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="/static/js/lib/jquery.address.js"></script>
+ <script src="/static/js/bootstrap.min.js"></script>
 <script type="text/javascript">
     var Gleebox;
 </script>

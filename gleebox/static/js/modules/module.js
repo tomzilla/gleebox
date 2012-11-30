@@ -20,7 +20,6 @@ var module = EventDispatcher.extend({
                 ret = ret.replace(token, this[key]);
             }
         }
-        ret = ret.replace('$$', 'class="' + this.name + '" ');
         pat = /\$.*?\$/g;
         var classes;
         var classesString;
@@ -36,13 +35,13 @@ var module = EventDispatcher.extend({
         return ret;
     },
     _node: null,
-    node: function() {
+    node: function(selector) {
         if (!this._node) {
-            this._node = $(this._render(this.template));
+            this._node = $(this._render(this.template)).addClass(this.name);
             var this2 = this;
             this.onRender(this._node);
         }
-        return $(this._node);
+        return selector ? $(this._node).find(selector) : $(this._node);
     },
     events: {},
     children: {},
