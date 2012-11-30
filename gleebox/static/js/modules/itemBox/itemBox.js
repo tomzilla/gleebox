@@ -17,6 +17,7 @@ Gleebox.require('module', function(M) {
             Gleebox.require('favButton', function(Fav) {
                 var button = new Fav();
                 button.itemId = this2.item.id;
+                button.setFaved(Boolean(this2.item.fav));
                 n.find('.left').append(button.node());
             });
         }

@@ -33,7 +33,7 @@ class Item(BaseController):
             new_item['pictures'].append(image_key)
             new_item.save()
 
-        return {'item': new_item}
+        return {'item': new_item.data}
 
     @action(renderer='json')
     @authed_api
@@ -44,21 +44,23 @@ class Item(BaseController):
     @authed_api
     def fav(self):
         #go directly to couchbase for now
-        user = User.get(self.user_id)
+        user = account.get(self.user_id)
         user.setdefault('favs', [])
-        item_id = self.required_params(['item_id'])
+        item_id, = self.required_params(['item_id'])
         if item_id not in user['favs']:
-            user['favs'].append(item_id)
+            user['favs'].append(str(item_id))
             user.save()
 
             timeblock = int(time.time() / (60 * 30))
             key = 'favsblock_%s_%s' % (item_id, timeblock)
-            val, cas = couchbase.incr('INTERNAL_%s' % key , 1, 0)
-            couchbase.set(key, 0, 0, {'value': val, 'item_id':item_id, 'time_block': timeblock})
+            val, cas = models.couchbase.incr('INTERNAL_%s' % key , 1, 0)
+            models.couchbase.set(key, 0, 0, {'value': val, 'item_id':item_id, 'time_block': timeblock})
 
             key = 'favs_%s' % (item_id)
-            var, cas = couchbase.incr('INTERNAL_%s' % key, 1, 0)
-            couchbase.set(key, 0, 0, {'value': val, 'item_id':item_id})
+            var, cas = models.couchbase.incr('INTERNAL_%s' % key, 1, 0)
+            models.couchbase.set(key, 0, 0, {'value': val, 'item_id':item_id})
+
+        return {'success': True}
 
     @action(renderer='json')
     @api

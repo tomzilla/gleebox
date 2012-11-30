@@ -23,7 +23,7 @@ class Account(BaseController):
             token = auth.issue_token(id)
             user['token'] = token
             self.request.response.set_cookie('token', token, max_age=365*86400)
-            return {'user': user}
+            return {'user': user.data}
         else:
             raise ApiException('missing info')
 
@@ -34,12 +34,12 @@ class Account(BaseController):
         if not token:
             token = self.request.cookies.get('token')
         id = auth.decode_token(token).split('|')[0]
-        blob = account.get(id)
-        if blob:
-            blob['token'] = token
+        acct = account.get(id)
+        if acct:
+            acct['token'] = token
         else:
             raise ApiException('User not found')
-        return {'user': blob}
+        return {'user': acct.data}
 
     @action(renderer='json')
     @api
@@ -53,6 +53,12 @@ class Account(BaseController):
             token = auth.issue_token(id)
             self.request.response.set_cookie('token', token, max_age=365*86400)
             user['token'] = token
-            return {'user': user}
+            return {'user': user.data}
         else:
             raise ApiException('missing info')
+
+    @action(renderer='json')
+    @authed_api
+    def get_favs(self):
+        user = account.get(self.user_id)
+        return {'favs': user['favs']}

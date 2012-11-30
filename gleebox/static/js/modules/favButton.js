@@ -5,7 +5,6 @@ Gleebox.require('module', function(M) {
         faved:false,
         setFaved: function(isFaved) {
             this.faved = isFaved;
-            console.log('set fav', isFaved);
             if (isFaved) {
                 this.node().html('<img src="http://i.imgur.com/xrj0X.png" />');
             } else {
@@ -18,7 +17,11 @@ Gleebox.require('module', function(M) {
                 this2.setFaved(faved);
             });
             n.click(function(evt) {
-                Gleebox.itemsService.setFav(this2.itemId, !this2.faved);
+                Gleebox.eventCenter.barrier('userservice_init', function() {
+                    if (Gleebox.userService.currentUser.id) {
+                        Gleebox.itemsService.setFav(this2.itemId, !this2.faved);
+                    }
+                });
             });
         }
     });

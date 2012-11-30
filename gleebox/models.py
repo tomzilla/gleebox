@@ -1,4 +1,5 @@
 import simplejson
+from UserDict import UserDict
 
 from sqlalchemy import (
     Column,
@@ -33,16 +34,17 @@ class MyModel(Base):
         self.name = name
         self.value = value
 
-class CouchData(dict):
-    def __init__(self, *args):
-        dict.__init__(self, self._default_blob())
+class CouchData(UserDict):
+    def __init__(self, data=None):
+        data = data if data else self._default_blob()
+        UserDict.__init__(self, data)
 
     @classmethod
-    def get(self, id):
+    def find(self, id):
         data = couchbase.get(self.make_key(id))
         if data and len(data) == 3:
-            return simplejson.loads(data[2])
-        return {}
+            return self(simplejson.loads(data[2]))
+        return None
 
     @classmethod
     def _schema(self):
@@ -52,7 +54,7 @@ class CouchData(dict):
     def _default_blob(self):
         blob = {}
         for k in self._schema():
-            blob[k] = None
+            blob[k] = ''
         return blob
 
     @classmethod
@@ -60,7 +62,7 @@ class CouchData(dict):
         raise Exception('Must Implement')
 
     def save(self):
-        return couchbase.set(self.make_key(self['id']), 0, 0, simplejson.dumps(self))
+        return couchbase.set(self.make_key(self['id']), 0, 0, simplejson.dumps(self.data))
 
 class User(CouchData):
     SALTa = '(*(*n3nn(u3nb'
@@ -76,12 +78,12 @@ class User(CouchData):
             blob['password'] = sha512(self.SALTa + password + self.SALTb).hexdigest()
         for k, v in kw.iteritems():
             blob[k] = v
-        couchbase.add(self.make_key(blob['id']), 0, 0, simplejson.dumps(blob))
+        couchbase.add(self.make_key(blob['id']), 0, 0, simplejson.dumps(blob.data))
         return blob
 
     @classmethod
     def _schema(self):
-        return ['id', 'email', 'password', 'fbid', 'favs']
+        return ['id', 'email', 'password', 'fbid', 'favs', 'first_name', 'last_name', 'display_name']
 
     @classmethod
     def next_id(self):

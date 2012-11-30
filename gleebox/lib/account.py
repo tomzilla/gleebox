@@ -20,7 +20,7 @@ def create_fb(facebook_token):
     return user
 
 def get(id):
-    user = User.get(id)
+    user = User.find(id)
     if user and user.get('password'):
         del user['password']
     return user
@@ -28,9 +28,9 @@ def get(id):
 def get_from_fb_token(token):
     graph = GraphAPI(token)
     profile = graph.get_object('me')
-    user_id = FBUserMapping.get(profile['id']).get('user_id')
+    user_id = FBUserMapping.find(profile['id']).get('user_id')
     if user_id:
-        user = User.get(user_id)
+        user = User.find(user_id)
         if user and user.get('password'):
             del user['password']
         return user

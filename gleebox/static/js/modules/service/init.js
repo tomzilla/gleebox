@@ -9,7 +9,6 @@ Gleebox.require("service/UserService", function(US) {
             });
         }
     }
-
     Gleebox.eventCenter.fire('userservice_init');
 });
 Gleebox.require('service/ItemsService', function(IS) {

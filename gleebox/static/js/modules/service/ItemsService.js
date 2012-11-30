@@ -6,7 +6,19 @@ Gleebox.require('service/Service', function(S) {
                 var i;
                 for (i = 0; i < items.length; i ++) {
                     instance.itemsCache[items[i].id] = items[i];
+                    (function (id) {
+                        Gleebox.eventCenter.barrier('userservice_init', function(data) {
+                            Gleebox.userService.barrier('got_favs', function() {
+                                var favs = Gleebox.userService.favs;
+                                if (favs.indexOf(String(id)) != -1) {
+                                    instance.itemsCache[id]['fav'] = true;
+                                    instance.fire(id + '_fav_changed', true);
+                                }
+                            });
+                        });
+                    })(items[i].id);
                 }
+                
             });
         },
         getHomeItems: function() {
@@ -27,7 +39,6 @@ Gleebox.require('service/Service', function(S) {
             console.log(instance.itemsCache);
             if (instance.itemsCache[itemId]) {
                 instance.itemsCache[itemId]['fav'] = fav;
-                console.log('cahced');
                 instance.fire(itemId + '_fav_changed', fav);
             }
         },
