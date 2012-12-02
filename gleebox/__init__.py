@@ -7,6 +7,7 @@ from sqlalchemy import engine_from_config
 from .controllers.account import Account
 from .controllers.home import Home
 from .controllers.item import Item
+from .controllers.comment import CommentController
 
 from .models import (
     DBSession,
@@ -29,12 +30,11 @@ def main(global_config, **settings):
     config.scan()
     config.add_handler('account', 'account/{action}', handler=Account)
     config.add_handler('item', 'item/{action}', handler=Item)
+    config.add_handler('comment', 'comment/{action}', handler=CommentController)
     config.add_handler('home', '/', handler=Home, action='index')
     cb = Couchbase(settings['couchbase.host'], settings['couchbase.bucket'], settings['couchbase.password'])[settings['couchbase.bucket']]
     models.couchbase = cb
     s3 = S3Connection(settings['aws.access_key'], settings['aws.secret_key'])
-    print s3
     models.s3 = s3
-    print models.s3
     return config.make_wsgi_app()
 

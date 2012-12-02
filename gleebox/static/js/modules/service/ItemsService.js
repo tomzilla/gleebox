@@ -35,7 +35,7 @@ Gleebox.require('service/Service', function(S) {
         },
         setFav: function(itemId, fav) {
             var instance = this;
-            Gleebox.api('item.fav', {item_id: itemId, fav: fav}, function(data) {});
+            Gleebox.api('item.fav', {item_id: itemId, fav: fav ? 1 : 0}, function(data) {});
             console.log(instance.itemsCache);
             if (instance.itemsCache[itemId]) {
                 instance.itemsCache[itemId]['fav'] = fav;

@@ -20,6 +20,12 @@ Gleebox.require('module', function(M) {
                 button.setFaved(Boolean(this2.item.fav));
                 n.find('.left').append(button.node());
             });
+            Gleebox.require('itemBox/itemSummary', function(Summary) {
+                var summary = new Summary();
+                summary.setFavs(this2.item.fav_count);
+                summary.setComments(this2.item.comment_count);
+                this2.node('.right').append(summary.node());
+            });
         }
     });
     Gleebox.addModule('itemBox/itemBox', module);

@@ -1,4 +1,5 @@
 import simplejson
+import time
 from UserDict import UserDict
 
 from sqlalchemy import (
@@ -136,5 +137,31 @@ class Item(CouchData):
     @classmethod
     def next_id(self):
         key = 'INTERNAL_%s_id_increment' % 'item'
+        next = couchbase.incr(key, 1, 0)[0]
+        return next
+
+class Comment(CouchData):
+    @classmethod
+    def _schema(self):
+        return ['id', 'user_id', 'item_id', 'comment', 'time_submitted', 'time_modified']
+
+    @classmethod
+    def create(self, user_id, item_id, comment):
+        item = Comment()
+        item['id'] = self.next_id()
+        item['user_id'] = user_id
+        item['item_id'] = item_id
+        item['comment'] = comment
+        item['time_submitted'] = int(time.time())
+        item.save()
+        return item
+
+    @classmethod
+    def make_key(self, id):
+        return 'Comment_%s' % (id)
+
+    @classmethod
+    def next_id(self):
+        key = 'INTERNAL_%s_id_increment' % 'comment'
         next = couchbase.incr(key, 1, 0)[0]
         return next
