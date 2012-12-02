@@ -11,7 +11,7 @@ Gleebox.require('module', function(M) {
             });
 
         },
-        requires: ['item/actions'],
+        requires: ['item/actions', 'item/itemPicture'],
         template: '<div>' +
             '<div $left$/>' +
             '<div $right$/>'+

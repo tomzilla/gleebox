@@ -26,10 +26,11 @@ Gleebox.require('service/Service', function(S) {
             console.log(instance);
             if (force || !instance.itemsCache[id]) {
                 Gleebox.api('item.get', {item_id: id}, function(data) {
-                    if (data.response.item) {
-                        this2.fire('items_loaded', [items]);
-                        instance.itemsCache[id] = data.response.item;
-                        callback(data.response.item);
+                    var item = data.response.item;
+                    if (item) {
+                        instance.fire('items_loaded', [item]);
+                        instance.itemsCache[id] = item;
+                        callback(item);
                     }
                 });
             } else {
