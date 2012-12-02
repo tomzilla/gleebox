@@ -21,6 +21,22 @@ Gleebox.require('service/Service', function(S) {
                 
             });
         },
+        get: function(id, callback, force) {
+            var instance = this;
+            console.log(instance);
+            if (force || !instance.itemsCache[id]) {
+                Gleebox.api('item.get', {item_id: id}, function(data) {
+                    if (data.response.item) {
+                        this2.fire('items_loaded', [items]);
+                        instance.itemsCache[id] = data.response.item;
+                        callback(data.response.item);
+                    }
+                });
+            } else {
+                callback(instance.itemsCache[id]);
+            }
+            return instance.itemsCache[id];
+        },
         getHomeItems: function() {
             var this2 = this;
             Gleebox.api('item.get_home_items', {offset: this2.fetchedCount}, function(data) {
@@ -36,7 +52,6 @@ Gleebox.require('service/Service', function(S) {
         setFav: function(itemId, fav) {
             var instance = this;
             Gleebox.api('item.fav', {item_id: itemId, fav: fav ? 1 : 0}, function(data) {});
-            console.log(instance.itemsCache);
             if (instance.itemsCache[itemId]) {
                 instance.itemsCache[itemId]['fav'] = fav;
                 instance.fire(itemId + '_fav_changed', fav);

@@ -26,6 +26,9 @@ Gleebox.require('module', function(M) {
                 summary.setComments(this2.item.comment_count);
                 this2.node('.right').append(summary.node());
             });
+            n.click(function() {
+                $.address.value('item?id=' + this2.item.id);
+            });
         }
     });
     Gleebox.addModule('itemBox/itemBox', module);
