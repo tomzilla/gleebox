@@ -1,0 +1,10 @@
+.itemBox_itemSummary_summaryItem {
+    display:inline-block;
+    width:40px;
+}
+.itemBox_itemSummary {
+    margin-left: 10px;
+    float: left;
+    bottom: 40px;
+    position: absolute;
+}

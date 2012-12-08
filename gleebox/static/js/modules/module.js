@@ -25,10 +25,12 @@ var module = EventDispatcher.extend({
         var classesString;
         while (token = pat.exec(ret)) {
             classesString = token[0].substring(1, token[0].length - 1);
-            classes = classesString.split('\\s+');
+            classes = classesString.split(/\s/g);
             var classesCount = classes.length;
             for (var i = 0; i < classesCount; i ++) {
-                classes.push(this.name + '_' + classes[i]);
+                if (classes[i].length) {
+                    classes.push(this.name + '_' + classes[i]);
+                }
             }
             ret = ret.replace(token[0], 'class="' + classes.join(' ') + '"');
         }

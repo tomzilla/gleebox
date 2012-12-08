@@ -1,7 +1,7 @@
 .itemBox_itemPicture {
-    width: 200px;
-    height: 250px;
-    margin-bottom: 10px;
+    width: 180px;
+    height: 180px;
+    margin: 10px;
     overflow: hidden;
 }
 .itemBox_itemPicture_picture {

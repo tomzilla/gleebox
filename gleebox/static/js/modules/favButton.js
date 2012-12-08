@@ -1,14 +1,14 @@
 Gleebox.require('module', function(M) {
     var module = M.extend({
-        template: '<button $btn btn-small$>Fav</button>',
+        template: '<button $btn btn-small btn-info$>Fav</button>',
         itemId: '',
         faved:false,
         setFaved: function(isFaved) {
             this.faved = isFaved;
             if (isFaved) {
-                this.node().html('<img src="http://i.imgur.com/xrj0X.png" />');
+                this.node().html('<img src="http://i.imgur.com/qGFOp.png" />');
             } else {
-                this.node().html('Fav');
+                this.node().html('Fav This');
             }
         },
         onRender: function(n) {
