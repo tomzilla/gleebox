@@ -1,7 +1,7 @@
 Gleebox.require('module', function(M) {
     var module = M.extend({
         requires: ['itemBox/itemBox'],
-        template: '<div $$/>',
+        template: '<div $clearfix$>',
         onRender: function(n) {
             var this2 = this;
             Gleebox.eventCenter.barrier('itemsservice_init', function() {

@@ -1,19 +1,22 @@
 Gleebox.require('module', function(M) {
     var module = M.extend({
         template: '<ul $$></ul>',
+        requires: ['header/logo', 'header/navigationItem'],
         onRender: function(n) {
             var this2 = this;
-            Gleebox.require('header/navigationItem', function(NavItem) {
-                var homeItem = new NavItem();
-                homeItem.title = 'Home';
-                homeItem.node().click(function() {
-                    $.address.value('');
+            Gleebox.require('header/logo', function(Logo) {
+                var logoItem = new Logo();
+                logoItem.node().click(function() {
+                    $.address.value('/');
                 });
-                this2.addChild('home', homeItem);
-                n.append(homeItem.node());
+                this2.addChild('logo', logoItem);
+                n.append(logoItem.node());
+
+            });
+            Gleebox.require('header/navigationItem', function(NavItem) {
 
                 var favItem = new NavItem();
-                favItem.title = 'Favs';
+                favItem.imageSrc = 'http://i.imgur.com/xTxM9.png';
                 favItem.node().click(function() {
                     $.address.value('/fav');
                 });
@@ -21,7 +24,7 @@ Gleebox.require('module', function(M) {
                 n.append(favItem.node());
 
                 var notifItem = new NavItem();
-                notifItem.title = 'Notif';
+                notifItem.imageSrc = 'http://i.imgur.com/Cmgvg.png';
                 notifItem.node().click(function() {
                     $.address.value('/notif');
                 });

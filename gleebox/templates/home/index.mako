@@ -1,9 +1,6 @@
 <%inherit file="../base.mako" />
 <div id="container">
 <div id="header">
-<div id="headline">
-Gleebox
-</div>
 </div>
 <div id="content">
 </div>

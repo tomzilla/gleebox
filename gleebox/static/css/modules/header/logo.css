@@ -1,9 +1,10 @@
-.header_navigationItem {
+.header_logo {
     display: inline;
     float: left;
-    padding: 16px;
+    height: 65px;
+    padding: 0 10px;
     cursor: pointer;
 }
-.header_navigationItem:hover {
+.header_logo:hover {
     background-color: #DDD;
 }

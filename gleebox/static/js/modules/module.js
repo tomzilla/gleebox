@@ -21,7 +21,7 @@ var module = EventDispatcher.extend({
             }
         }
         pat = /\$.*?\$/g;
-        var classes;
+        var classes = [this.name];
         var classesString;
         while (token = pat.exec(ret)) {
             classesString = token[0].substring(1, token[0].length - 1);
@@ -33,6 +33,7 @@ var module = EventDispatcher.extend({
                 }
             }
             ret = ret.replace(token[0], 'class="' + classes.join(' ') + '"');
+            classes = [];
         }
         return ret;
     },

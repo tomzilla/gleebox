@@ -1,9 +1,10 @@
 Gleebox.require('module', function(M) {
     var module = M.extend({
         template: '<li $$>' +
-            '<img src="%imageSrc%" />' +
+            '<img src="http://i.imgur.com/90i4k.png" />' +
             '</li>',
-        imageSrc: ''
+        title: ''
     });
-    Gleebox.addModule('header/navigationItem', module);
+    Gleebox.addModule('header/logo', module);
 });
+
