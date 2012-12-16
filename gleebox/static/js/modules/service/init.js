@@ -13,6 +13,11 @@ Gleebox.require("service/UserService", function(US) {
 });
 Gleebox.require('service/ItemsService', function(IS) {
     Gleebox.itemsService = new IS();
+    console.log(Gleebox.itemsService);
     Gleebox.eventCenter.fire('itemsservice_init');
     Gleebox.itemsService.getHomeItems();
+});
+Gleebox.require('service/CommentsService', function(CS) {
+    Gleebox.commentsService = new CS();
+    Gleebox.eventCenter.fire('commentsservice_init');
 });

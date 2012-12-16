@@ -54,7 +54,9 @@ Gleebox = $.extend(Gleebox, {
         var c = call.split('.');
         $.get('/' + c[0] + '/' + c[1], params, function(data) {
             console.log('result for api:', data);
-            callback(data);
+            if (callback) {
+                callback(data);
+            }
         }, 'json');
     },
     getCookie: function(c_name)

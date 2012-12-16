@@ -1,0 +1,12 @@
+.item_comment {
+    margin:10px 0;
+    padding-bottom:5px;
+    border-bottom: #ddd solid 1px;
+}
+.item_comment_picture {
+    float:left;
+}
+.item_comment_comment {
+    margin-left:10px;
+    float:left;
+}

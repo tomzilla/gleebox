@@ -1,12 +1,13 @@
 Gleebox.require('module', function(M) {
     var module = M.extend({
         template: '<button $btn btn-small btn-info$>Fav</button>',
+        icon: 'http://i.imgur.com/qGFOp.png',
         itemId: '',
         faved:false,
         setFaved: function(isFaved) {
             this.faved = isFaved;
             if (isFaved) {
-                this.node().html('<img src="http://i.imgur.com/qGFOp.png" />');
+                this.node().html('<img src="' + this.icon + '" />');
             } else {
                 this.node().html('Fav This');
             }

@@ -1,0 +1,12 @@
+.commentBox textarea {
+    width:450px;
+    margin:5px;
+}
+.commentBox_picture {
+    margin-top:10px;
+    float:left;
+}
+.commentBox_button {
+    float:right;
+    margin-right:60px;
+}

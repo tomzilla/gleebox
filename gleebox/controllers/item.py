@@ -38,11 +38,6 @@ class Item(BaseController):
     @action(renderer='json')
     @authed_api
     def unfav(self):
-        return {}
-
-    @action(renderer='json')
-    @authed_api
-    def unfav(self):
         #go directly to couchbase for now
         user = account.get(self.user_id)
         user.setdefault('favs', [])
@@ -56,11 +51,11 @@ class Item(BaseController):
             key = 'favsblock_%s_%s' % (item_id, timeblock)
             current_block = models.couchbase.get('INTERNAL_%s' % key)
             if current_block and current_block[2] > 0:
-                val, cas = models.couchbase.incr('INTERNAL_%s' % key , increment, 0)
+                val, cas = models.couchbase.decr('INTERNAL_%s' % key , increment, 0)
                 models.couchbase.set(key, 0, 0, {'value': val, 'item_id':item_id, 'time_block': timeblock})
 
             key = 'favs_%s' % (item_id)
-            val, cas = models.couchbase.incr('INTERNAL_%s' % key, increment, 0)
+            val, cas = models.couchbase.decr('INTERNAL_%s' % key, increment, 0)
             models.couchbase.set(key, 0, 0, {'value': val, 'item_id':item_id})
 
         return {'success': True}
@@ -74,6 +69,7 @@ class Item(BaseController):
         user.setdefault('favs', [])
         item_id, = self.required_params(['item_id'])
         fav = int(self.request.params.get('fav'))
+        print fav, type(fav)
         if not fav:
             return self.unfav()
         increment = 1
@@ -111,6 +107,32 @@ class Item(BaseController):
     def get(self):
         item_id, = self.required_params(['item_id'])
         item_obj = ItemModel.find(item_id)
-        item_obj, = item.append_full_data([item_obj])
 
         return {'item': item_obj.data}
+
+    @action(renderer='json')
+    @api
+    def get_comments(self):
+        item_id, = self.required_params(['item_id'])
+        comments = models.couchbase.view('_design/search/_view/comments_for_item', key=str(item_id))
+        users = {}
+        ret = []
+        for comment in comments:
+            user_id = comment['value']['user_id']
+            if user_id not in users:
+                user = models.User.find(user_id).data
+                name = user.get('display_name')
+                if not name:
+                    name = '%s %s' % (user.get('first_name', ''), user.get('last_name', ''))
+                user = {
+                        'id': user_id,
+                        'display_name': name,
+                        'fbid': user.get('fbid')
+                        }
+
+                users[user_id] = user
+            comment['value']['user'] = users[user_id]
+            del(comment['value']['user_id'])
+            del(comment['value']['item_id'])
+            ret.append(comment['value'])
+        return ret

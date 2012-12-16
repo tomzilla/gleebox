@@ -3,12 +3,10 @@
 window.console = window.console || {};
 $(function() {
 $.address.change(function(event) {
-    console.log(event);
     if (event.path == '/item') {
-            console.log(Gleebox.itemsService.itemsCache[event.parameters.id]);
-            Gleebox.eventCenter.barrier('itemsservice_init', function() {
-                Gleebox.itemsService.get(event.parameters.id, function(itemObj) {
-        Gleebox.require('item', function(Item) {
+        Gleebox.eventCenter.barrier('itemsservice_init', function() {
+            Gleebox.itemsService.get(event.parameters.id, function(itemObj) {
+                Gleebox.require('item', function(Item) {
                     var item = new Item(itemObj);
                     $('#content').html(item.node());
                 });

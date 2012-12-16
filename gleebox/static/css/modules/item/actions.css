@@ -1,0 +1,12 @@
+.item_actions {
+    width:155px;
+    float:none;
+    margin-left:auto;
+    margin-right:auto;
+}
+.item_actions_fav {
+    margin:5px;
+}
+.item_actions_share {
+    margin:5px;
+}

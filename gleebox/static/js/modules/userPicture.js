@@ -1,5 +1,8 @@
 Gleebox.require('module', function(M) {
     var module = M.extend({
+        init: function(id) {
+            this.fbid = id;
+        },
         template: '<img $$ src="//graph.facebook.com/%fbid%/picture?type=square" />',
         fbid: '',
         setFbid: function (id) {

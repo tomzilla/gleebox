@@ -1,0 +1,27 @@
+.item {
+    width:1000px;
+    float:none;
+    margin:20px auto;
+}
+.item_right {
+    padding-top:50px;
+    width: 400px;
+    float:left;
+}
+.item_description {
+    margin: 20px 0;
+}
+.item_picture {
+    text-align:center;
+    margin: 20px 0;
+}
+
+.item_left {
+    float:left;
+    width:600px;
+}
+.item_description {
+    text-align:center;
+    color:#0c72ae;
+    font-size:18px;
+}
