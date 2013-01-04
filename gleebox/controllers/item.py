@@ -19,9 +19,8 @@ class Item(BaseController):
     def create(self):
         title, price = self.required_params(['title', 'price'])
         user = account.get(self.user_id)
-
-        new_item = ItemModel.create(self.user_id, title, price)
-
+        longitude, latitude, place_ref, place_name, address = self.optional_params(['longitude', 'latitude', 'place_ref', 'place_name', 'formatted_address'])
+        new_item = ItemModel.create(self.user_id, title, price=price, loc=[longitude, latitude], place_name=place_name, place_ref=place_ref, address=address)
 
         if 'picture' in self.request.POST:
             extension = self.request.POST['picture'].filename.split('.')[-1]

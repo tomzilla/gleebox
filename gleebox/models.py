@@ -120,13 +120,14 @@ class Item(CouchData):
         return ['id', 'user_id', 'title', 'price', 'time_submitted', 'time_modified', 'user']
 
     @classmethod
-    def create(self, user_id, title, price):
+    def create(self, user_id, title, **kw):
         item = Item()
         item['id'] = self.next_id()
         item['user_id'] = user_id
         item['title'] = title
-        item['price'] = price
         item['pictures'] = []
+        for k, v in kw.iteritems():
+            blob[k] = v
         item.save()
         return item
 
